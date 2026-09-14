@@ -25,9 +25,11 @@ distribution are deferred until the core path is stable.
   mappings, plus the compatibility strategy and initial support matrix. The
   project goal is broad practical version coverage, implemented through
   version-family adapters and tested release lines where needed.
-- Use Minecraft Java 26.2 as the first development anchor; pin its exact
-  loader, mappings, optional Fabric API, and Java toolchain before scaffolding,
-  then extend compatibility through version-family adapters.
+- Use Minecraft Java 26.2 as the first development anchor. It ships
+  unobfuscated code, so use Fabric Loom's non-remapping plugin and no mappings
+  artifact; pin its exact loader, optional Fabric API, Gradle wrapper, and Java
+  toolchain before scaffolding, then extend compatibility through version-family
+  adapters.
 - Scope compatibility work to Minecraft Java Edition; Bedrock Edition is out
   of scope.
 - Set the compatibility floor at Minecraft Java Edition 1.14, through current

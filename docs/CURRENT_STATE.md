@@ -9,17 +9,20 @@ Last updated: 2026-09-13
   optional and is not a core dependency.
 - The initial source entrypoint is
   `dev.fabriccontrollermcp.FabricControllerMcpClient`.
-- Gradle is not installed globally and the Gradle wrapper has not yet been
-  generated, so the build has not yet been executed.
+- Gradle is not installed globally, but the project-local Gradle 9.5.0 wrapper
+  has been generated (`gradlew`, `gradlew.bat`, and `gradle/wrapper/*`).
+- `./gradlew.bat --no-daemon clean build` was run on 2026-09-13. It reaches
+  Fabric Loom 1.17.20 and completes successfully.
+- Minecraft 26.2 ships unobfuscated code. The build therefore uses Fabric
+  Loom's non-remapping plugin (`net.fabricmc.fabric-loom`), standard
+  `implementation` dependencies, and no development-mappings artifact.
 
 ## Active work
 
 An implementation plan is documented in `docs/IMPLEMENTATION_PLAN.md`.
-Capture the project owner's decisions that gate Checkpoint 0 before scaffolding
-the mod.
+The current anchor choices are captured in `docs/DECISIONS.md`.
 
 ## Next milestone
 
-Complete the build foundation by generating the Gradle wrapper and verifying a
-26.2 development build. Then implement the local MCP diagnostic transport and
-Minecraft-thread bridge.
+Verify a 26.2 development-client launch. Then implement the local MCP
+diagnostic transport and Minecraft-thread bridge.
