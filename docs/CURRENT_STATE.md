@@ -84,6 +84,11 @@ Packs, Accessibility, and Telemetry), excluding Credits & Attribution. Each
 direct settings section has a compact `.list` command; `settings.music_and_sounds.list`
 was verified live and includes `sound.music`.
 
+The clickable, expandable command reference begins at `docs/COMMANDS.md`.
+It mirrors the runtime tree with separate pages for Settings, UI, Main Menu
+(including Single-player and Multiplayer), and In-game; future branches can be
+documented without growing one monolithic file.
+
 The first Phase 2 low-level UI foundation is implemented: `ui.get_current_screen`,
 `ui.inspect_elements`, `ui.click`, `ui.select`, `ui.set_focus`, `ui.type_text`,
 `ui.set_slider`, `ui.choose`, `ui.toggle`, `ui.scroll`, and `ui.key_press`.

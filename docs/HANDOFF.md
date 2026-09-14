@@ -68,6 +68,10 @@ phases. The settings branch mirrors vanilla's Options sections except Credits
 `settings.music_and_sounds.list`, which exposes the direct `sound.music`
 volume setting in every client state.
 
+The repository's clickable command reference is `docs/COMMANDS.md`; it links
+to independently maintained Settings, UI, Main Menu, and In-game pages under
+`docs/commands/`.
+
 ## Resume from here
 
 1. Manually verify a live `settings.update` of `sound.music` through the new
