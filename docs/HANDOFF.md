@@ -58,11 +58,28 @@ Loader installation); no standalone MCP or Tomcat libraries need to be copied
 into the mods folder. `./gradlew.bat --no-daemon clean build` passed on
 2026-09-14 and its output declared all 15 nested runtime JAR entries.
 
+The MCP server now advertises only one compact `mcp` tool. Its empty/root call
+reports the client state and command-tree roots; `help` with a path recursively
+lists exact state-aware commands. Shared categories are `settings` and `ui`.
+The main-menu branch has single-player and multiplayer categories; the in-game
+branch reserves player, world, interaction, and navigation for their later
+phases. The settings branch mirrors vanilla's Options sections except Credits
+& Attribution and supports compact per-section listings such as
+`settings.music_and_sounds.list`, which exposes the direct `sound.music`
+volume setting in every client state.
+
 ## Resume from here
 
-1. Begin Phase 2 with a structured, read-only current-screen inspection tool.
-3. Continue Checkpoint 0 technical decisions only as they become necessary;
-   product-level decisions are captured in `docs/DECISIONS.md`.
+1. Manually verify a live `settings.update` of `sound.music` through the new
+   `mcp` command dispatcher, plus controls, saved-server mutations/joining,
+   and local-world list/create/load. The production build passed; one-tool
+   discovery and the compact Music & Sounds listing succeeded live.
+2. Continue Phase 2 only for uncovered vanilla screen-only flows using the
+   generic UI tools. Direct services enumerate all registered OptionInstances
+   and keybindings instead of maintaining a fragile hand-made allowlist. Sound
+   categories are direct settings too: use `sound.music` for music volume.
+3. Begin Phase 3 read-only player/world inspection after recording manual
+   results. Maintain per-version compatibility notes for direct APIs.
 
 ## Update checklist
 

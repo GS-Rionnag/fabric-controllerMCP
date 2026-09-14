@@ -37,6 +37,8 @@
 | Job replacement approval | Require a follow-up confirmation in ChatGPT before replacing an active autonomous job; do not use an in-game confirmation prompt | 2026-09-13 |
 | Screenshot retention | Return screenshots directly to the connected MCP client; do not save them to disk by default | 2026-09-13 |
 | Persistent logging | Keep no persistent MCP action/audit logs by default. Offer explicitly enabled local diagnostic logging for debugging. | 2026-09-13 |
+| High-level UI behavior | Prefer direct, Minecraft-client backend APIs for high-level settings, controls, saved-server, and other supported vanilla operations. Execute them on the Minecraft client thread without opening, navigating, or visibly changing UI screens whenever the underlying API permits it; the generic UI API is the fallback for screen-only flows. This lets actions such as changing music volume happen while gameplay continues. | 2026-09-14 |
+| MCP command organization | Expose a single compact `mcp` tool with a recursive, git-like, state-aware command tree instead of advertising every action as a separate MCP tool. Shared `settings` and `ui` branches are available in menu and game states; state-specific branches expand only through `help`. Mirror vanilla Options sections, excluding Credits & Attribution, and use compact per-section listings to reduce tool/result context. | 2026-09-14 |
 
 ## Open decisions
 

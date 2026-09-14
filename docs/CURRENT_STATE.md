@@ -50,9 +50,51 @@ Last updated: 2026-09-14
 
 ## Active work
 
-An implementation plan is documented in `docs/IMPLEMENTATION_PLAN.md`.
-The current anchor choices are captured in `docs/DECISIONS.md`.
+Phase 2 is active. The low-level generic UI layer and high-level
+vanilla-client services are implemented and build.
+High-level actions must use direct Minecraft client APIs on the client thread
+where available, without opening or navigating a visible screen. This includes
+live settings such as music volume, which should change while gameplay
+continues. UI navigation remains the fallback for UI-only flows.
+
+The detailed implementation plan is in `docs/IMPLEMENTATION_PLAN.md`; the
+anchor choices are captured in `docs/DECISIONS.md`.
 
 ## Next milestone
 
-Begin the first Phase 2 UI tool: structured current-screen inspection.
+Direct services now expose every registered vanilla `OptionInstance` through
+`settings.list`, `settings.get`, and `settings.update`, so all live client
+settings (including sound) can change without a menu. Every registered vanilla
+key mapping is available through `controls.list` and `controls.update`.
+Per-category volume settings use stable direct IDs such as `sound.music`; this
+corrects the earlier omission where parameterized vanilla sound options were
+not included in the general OptionInstance scan.
+Saved-server listing, save/replace, removal, and join plus local-world listing,
+direct normal-preset creation, and loading are also available. All operations
+run via `MinecraftClientBridge` and use vanilla persistence/connection APIs.
+
+The MCP surface is now deliberately compact: the host sees one `mcp` tool rather
+than a flat list of every action. Calling it with no command returns the
+state-aware root (`mainmenu` or `ingame`) plus shared `settings` and `ui`;
+`help` with a path drills into categories. Main-menu commands are grouped into
+single-player and multiplayer, while in-game future capabilities have their
+own reserved branch. Settings mirrors vanilla Options sections (FOV, Online,
+Skin Customization, Music & Sounds, Video, Controls, Language, Chat, Resource
+Packs, Accessibility, and Telemetry), excluding Credits & Attribution. Each
+direct settings section has a compact `.list` command; `settings.music_and_sounds.list`
+was verified live and includes `sound.music`.
+
+The first Phase 2 low-level UI foundation is implemented: `ui.get_current_screen`,
+`ui.inspect_elements`, `ui.click`, `ui.select`, `ui.set_focus`, `ui.type_text`,
+`ui.set_slider`, `ui.choose`, `ui.toggle`, `ui.scroll`, and `ui.key_press`.
+Actions are guarded by a screen-state version, which changes when the inspected
+screen, standard widget state, or supported text/cycle values change. The
+implementation recursively walks standard nested UI containers (up to 512
+elements), including supported widget metadata and text-field values. This
+exposes individual option rows and sliders inside vanilla scrolling lists with
+hierarchical IDs such as `element:0/child:2`; unsupported custom widgets return
+structured errors rather than pretending to succeed. A clean production build
+passed on 2026-09-14. The updated client launched, MCP discovery advertised all
+new tools, and a live `settings.get` request succeeded. Stateful server/world
+flows and live setting/keybinding changes still need interactive verification.
+The connector binds only to `127.0.0.1`.

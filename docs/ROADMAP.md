@@ -18,12 +18,17 @@ Status legend: `planned` · `active` · `complete`
 - [x] Bridge MCP work safely onto the Minecraft client thread.
 - [ ] Add diagnostics and an opt-in configuration surface.
 
-## Phase 2 — In-game UI control (`planned`)
+## Phase 2 — In-game UI control (`active`)
 
-- [ ] Generic current-screen, widget, focus, click, typing, selection,
+- [x] Generic current-screen, widget, focus, click, typing, selection,
   scrolling, and keybinding API.
-- [ ] High-level title/menu tools: join server, create world, inspect/update
-  settings and controls.
+- [x] High-level title/menu tools: join server, create/load a normal-preset
+  local world, inspect/update direct vanilla settings and controls, and manage
+  saved servers without UI navigation.
+
+High-level operations should use direct client APIs without opening menus where
+those APIs exist. Generic screen interaction is reserved for UI-only flows and
+as a compatibility fallback.
 
 ## Phase 3 — Read-only inspection (`planned`)
 

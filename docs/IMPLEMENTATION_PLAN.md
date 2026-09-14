@@ -157,6 +157,12 @@ screen before a world is loaded.
 - Add high-level version-adapted commands for common flows: `server.join`,
   `world.create`, `settings.get`, `settings.update`, and controls/keybinding
   inspection and updates.
+- Prefer direct client-side APIs for high-level operations wherever Minecraft
+  exposes them. For example, changing a sound option must update the live
+  option on the Minecraft client thread while gameplay continues; it must not
+  first navigate to Music & Sound Options or visibly alter the current screen.
+  Use the generic UI layer only where a flow is genuinely screen-only or no
+  stable direct API exists.
 - Support title screen, multiplayer/server-entry screens, create-world flow,
   settings, and controls. The Minecraft launcher and login screens are
   explicitly out of scope; rich custom-mod UI support is deferred.
@@ -253,5 +259,8 @@ continuity documents are required.
 
 ## Immediate next action
 
-Choose the MCP library and loopback transport, then implement the diagnostic
-transport, lifecycle ownership, and Minecraft-client-thread bridge.
+Manually validate Phase 2's completed direct vanilla-client services in a
+development client: every settings/keybinding entry, saved-server management
+and joining, and local-world list/create/load. Retain the generic UI API for
+screen-only flows and unsupported custom controls, then begin Phase 3
+read-only player/world inspection.
