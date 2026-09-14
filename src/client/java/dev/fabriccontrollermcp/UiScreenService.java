@@ -10,7 +10,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.InputWithModifiers;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 
@@ -144,20 +143,6 @@ public final class UiScreenService {
                 + currentStateVersion(Minecraft.getInstance().gui.screen()) + "}";
     }
 
-    public String keyPressJson(String keyName, long expectedStateVersion) {
-        Screen screen = matchingScreen(expectedStateVersion);
-        if (screen == null) return staleOrInvalidScreenJson(expectedStateVersion);
-        Integer key = switch (keyName) {
-            case "ESCAPE" -> 256; case "ENTER" -> 257; case "TAB" -> 258; case "BACKSPACE" -> 259;
-            case "LEFT" -> 263; case "RIGHT" -> 262; case "UP" -> 265; case "DOWN" -> 264;
-            default -> null;
-        };
-        if (key == null) return "{\"ok\":false,\"error\":{\"code\":\"unsupported_key\",\"message\":\"Only Escape, Enter, Tab, Backspace, and arrow keys are supported\"}}";
-        boolean consumed = screen.keyPressed(new KeyEvent(key, 0, 0));
-        return "{\"ok\":true,\"action\":\"key_press\",\"key\":\"" + keyName + "\",\"result\":\""
-                + (consumed ? "consumed" : "not_consumed") + "\",\"screenStateVersion\":" + currentStateVersion(Minecraft.getInstance().gui.screen()) + "}";
-    }
-
     private long currentStateVersion(Screen screen) {
         String signature = signature(screen);
         if (!signature.equals(lastSignature)) {
@@ -174,7 +159,7 @@ public final class UiScreenService {
         }
         return "{\"ok\":true,\"screen\":{\"id\":\"" + escape(screenId(screen)) + "\",\"className\":\""
                 + escape(screen.getClass().getName()) + "\",\"title\":\"" + escape(screen.getTitle().getString())
-                + "\",\"stateVersion\":" + version + ",\"capabilities\":[\"inspect_elements\",\"click\",\"focus\",\"type_text\",\"set_slider\",\"choose\",\"scroll\",\"key_press\"]}}";
+                + "\",\"stateVersion\":" + version + ",\"capabilities\":[\"inspect_elements\",\"click\",\"focus\",\"type_text\",\"set_slider\",\"choose\",\"scroll\"]}}";
     }
 
     private static String elementJson(String id, GuiEventListener element) {

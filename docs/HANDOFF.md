@@ -30,19 +30,21 @@ at `http://127.0.0.1:43125/mcp`. It is loopback-only and rejects non-local
 browser origins. The initial `ping` and `server_status` tools are registered;
 Minecraft work must cross `MinecraftClientBridge`.
 
-The official Windows `tunnel-client` 0.0.14 binary is installed outside the
-repository at `%LOCALAPPDATA%\\fabric-controller-mcp\\tunnel-client`. Its
-`fabric-controller-mcp` profile is configured with tunnel ID
+The official Windows `tunnel-client` 0.0.14 binary remains installed outside
+the repository at `%LOCALAPPDATA%\\fabric-controller-mcp\\tunnel-client`.
+The Fabric tunnel is now operated by the automatic LocalSystem Windows Service
+`FabricControllerMcpTunnel` (display name: `Fabric Controller MCP Tunnel`),
+not the former Startup-folder process. Its native service wrapper and a
+non-secret runtime copy of the tunnel client/profile live under
+`%ProgramData%\\fabric-controller-mcp`; the profile retains tunnel ID
 `tunnel_6aa75324261c81919453e546b1aafa67` and forwards to
-`http://127.0.0.1:43125/mcp`. The remaining prerequisite is a runtime API key
-in the `CONTROL_PLANE_API_KEY` environment variable; it has been set in the
-Windows user environment without writing the value into the repository or
-profile. The `OpenAI Tunnel Clients.vbs` user Startup-folder launcher starts
-and supervises every local tunnel-client `.yaml`/`.yml` profile found in the
-official default profile directory (`~/.config/tunnel-client`) and the existing
-Fabric profile directory. It re-scans for additions every 15 seconds and
-restarts exited profile clients. Profiles need distinct health/admin ports (or
-`127.0.0.1:0`); the Fabric profile uses `http://127.0.0.1:18080/ui`.
+`http://127.0.0.1:43125/mcp`. The wrapper reads `CONTROL_PLANE_API_KEY` from
+the configured user's registry environment only at service startup; it never
+copies the key into service settings, profiles, source, or logs. Service
+recovery restarts a failed wrapper. The old `OpenAI Tunnel Clients.vbs` Startup
+entry was renamed with a `.disabled` suffix to avoid duplicate clients. The
+service and its `http://127.0.0.1:18080/readyz` check returned healthy on
+2026-09-14.
 
 The embedded Tomcat server must call `tomcat.getConnector()` before starting;
 without that call it logs a misleading listening message but binds no port.
@@ -72,18 +74,33 @@ The repository's clickable command reference is `docs/COMMANDS.md`; it links
 to independently maintained Settings, UI, Main Menu, and In-game pages under
 `docs/commands/`.
 
+`compat/1.20.1` is an isolated Java-17 remapping build profile for Minecraft
+1.20.1. It resolves successfully through Loom but the shared 26.2 client code
+does not compile there: `UiScreenService`, saved-server joining, keybinding
+metadata, and world flows use newer APIs. Port those into version-specific
+1.20.1 adapters before claiming or publishing a 1.20.1 JAR.
+
 ## Resume from here
 
-1. Manually verify a live `settings.update` of `sound.music` through the new
-   `mcp` command dispatcher, plus controls, saved-server mutations/joining,
-   and local-world list/create/load. The production build passed; one-tool
-   discovery and the compact Music & Sounds listing succeeded live.
-2. Continue Phase 2 only for uncovered vanilla screen-only flows using the
+1. The Save and Quit to Title retest now passes: `ui.click` returns success and
+   the client reaches `mainmenu`. The bridge waits up to 30 seconds for vanilla
+   save/disconnect work and returns `client_timeout`, rather than the false
+   `client_unavailable`, only when that bounded wait is genuinely exceeded.
+2. The shared raw `input` branch is manually verified for Escape pause-menu
+   navigation; held W and Shift input; seed `12345` creation and local-world
+   listing; saved-server removal; raw mouse movement/button/scroll; and raw
+   text entry. `RawInputService` accepts both canonical dotted vanilla key
+   names (`key.keyboard.left.shift`) and underscore aliases. Its captured-cursor
+   baseline restoration prevents a physical mouse movement from reversing an
+   injected camera turn; the user confirmed this works correctly in a live
+   single-player world. The raw-input foundation is complete.
+3. Continue Phase 2 only for uncovered vanilla screen-only flows using the
    generic UI tools. Direct services enumerate all registered OptionInstances
    and keybindings instead of maintaining a fragile hand-made allowlist. Sound
    categories are direct settings too: use `sound.music` for music volume.
-3. Begin Phase 3 read-only player/world inspection after recording manual
-   results. Maintain per-version compatibility notes for direct APIs.
+4. Begin Phase 3 read-only player/world inspection only after the remaining
+   Phase 2 verification issues are resolved. Maintain per-version compatibility
+   notes for direct APIs.
 
 ## Update checklist
 

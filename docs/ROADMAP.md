@@ -49,6 +49,21 @@ as a compatibility fallback.
 
 ## Phase 6 — Client control and expansion (`planned`)
 
-- [ ] Keyboard, mouse, camera, and rich custom-mod UI support.
+- [x] Shared raw keyboard and mouse event dispatch through vanilla client
+  handlers (`input`); camera and rich custom-mod UI support remain planned.
 - [ ] Arbitrary supported screen interaction and vision/coordinate fallback.
 - [ ] Add capabilities one at a time with tests and documentation.
+
+## Phase 7 — Full Fabric-version compatibility (`planned`)
+
+- [ ] Support every practical Fabric-supported Minecraft Java release from
+  1.14 through current, including patch releases where technically feasible.
+- [ ] Build version-family adapters for all Minecraft client APIs that differ
+  across releases; never relabel a newer JAR as an older-version build.
+- [ ] Produce remapped, Java-compatible release artifacts for each supported
+  release family while preserving the one-mod-JAR installation experience.
+- [ ] Test every claimed version family in a real Fabric client and publish a
+  compatibility matrix listing supported versions and documented exceptions.
+- [ ] Keep the compact, state-aware MCP command tree consistent across version
+  families, returning structured unsupported responses only where a vanilla
+  capability genuinely does not exist.

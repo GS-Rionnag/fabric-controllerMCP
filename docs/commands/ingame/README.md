@@ -6,6 +6,7 @@ This branch becomes active when `mcp state` reports `ingame`.
 
 - [Settings](../settings/README.md) — direct client preferences and controls.
 - [UI](../ui/README.md) — current-screen inspection and interaction.
+- [Raw input](../input/README.md) — keyboard and mouse events.
 
 ## Planned branches
 

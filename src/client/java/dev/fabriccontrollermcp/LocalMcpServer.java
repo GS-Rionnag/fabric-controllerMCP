@@ -67,6 +67,9 @@ public final class LocalMcpServer implements AutoCloseable {
     private McpSchema.CallToolResult commandResult(Map<String, Object> arguments) {
         try {
             return textResult(clientBridge.call(() -> commands.execute(arguments)));
+        } catch (MinecraftClientBridge.ClientThreadTimeoutException error) {
+            FabricControllerMcpClient.LOGGER.warn("Minecraft command exceeded its {} second client-thread wait", error.timeout().toSeconds());
+            return textResult("{\"ok\":false,\"error\":{\"code\":\"client_timeout\",\"message\":\"Minecraft is still processing this command; its final state may have changed\",\"timeoutSeconds\":" + error.timeout().toSeconds() + "}}");
         } catch (Exception error) {
             FabricControllerMcpClient.LOGGER.warn("Unable to execute Minecraft command", error);
             return textResult("{\"ok\":false,\"error\":{\"code\":\"client_unavailable\",\"message\":\"Minecraft client thread is unavailable\"}}");

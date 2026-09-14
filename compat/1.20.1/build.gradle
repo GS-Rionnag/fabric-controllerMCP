@@ -1,0 +1,83 @@
+// Isolated remapping build for Minecraft 1.20.1.  Run from the repository root:
+//   ./gradlew.bat -p compat/1.20.1 build
+plugins {
+    id 'net.fabricmc.fabric-loom-remap' version '1.17-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = '0.1.0-SNAPSHOT+1.20.1'
+group = 'dev.fabriccontrollermcp'
+
+base { archivesName = 'fabric-controller-mcp-1.20.1' }
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+}
+
+sourceSets {
+    main {
+        java.setSrcDirs([])
+        resources.setSrcDirs(['../../src/main/resources'])
+    }
+}
+
+loom {
+    splitEnvironmentSourceSets()
+    mods {
+        'fabric_controller_mcp' {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+sourceSets.named('client') {
+    java.setSrcDirs(['../../src/client/java'])
+    resources.setSrcDirs([])
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.20.1'
+    mappings loom.officialMojangMappings()
+    implementation 'net.fabricmc:fabric-loader:0.14.22'
+
+    def mcpSdk = 'io.modelcontextprotocol.sdk:mcp:2.0.1'
+    def tomcatEmbed = 'org.apache.tomcat.embed:tomcat-embed-core:11.0.11'
+    implementation mcpSdk
+    implementation tomcatEmbed
+    [
+        mcpSdk,
+        'io.modelcontextprotocol.sdk:mcp-json-jackson3:2.0.1',
+        'io.modelcontextprotocol.sdk:mcp-core:2.0.1',
+        'org.slf4j:slf4j-api:2.0.17',
+        'com.fasterxml.jackson.core:jackson-annotations:2.21',
+        'io.projectreactor:reactor-core:3.7.0',
+        'org.reactivestreams:reactive-streams:1.0.4',
+        'tools.jackson.core:jackson-databind:3.1.4',
+        'tools.jackson.core:jackson-core:3.1.4',
+        'com.networknt:json-schema-validator:3.0.6',
+        'com.ethlo.time:itu:1.14.0',
+        'tools.jackson.dataformat:jackson-dataformat-yaml:3.1.4',
+        'org.snakeyaml:snakeyaml-engine:3.0.1',
+        tomcatEmbed,
+        'org.apache.tomcat:tomcat-annotations-api:11.0.11'
+    ].each { include it }
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    inputs.properties(version: project.version, minecraft_version_range: '~1.20.1', java_version: '17')
+    filesMatching('fabric.mod.json') {
+        expand version: project.version, minecraft_version_range: '~1.20.1', java_version: '17'
+    }
+}

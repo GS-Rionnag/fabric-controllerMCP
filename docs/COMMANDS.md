@@ -22,6 +22,8 @@ mcp
   and controls in either client state.
 - [Shared UI](commands/ui/README.md) — inspect and interact with visible
   screens in either client state.
+- [Raw input](commands/input/README.md) — keyboard and mouse events in either
+  client state.
 - [Main menu](commands/mainmenu/README.md) — single-player worlds and
   multiplayer servers while no world is loaded.
 - [In-game](commands/ingame/README.md) — the future home for player, world,

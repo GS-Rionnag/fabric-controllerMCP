@@ -10,9 +10,12 @@
       "dev.fabriccontrollermcp.FabricControllerMcpClient"
     ]
   },
+  "mixins": [
+    "fabric-controller-mcp.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.19.5",
-    "minecraft": "~26.2",
-    "java": ">=25"
+    "minecraft": "${minecraft_version_range}",
+    "java": ">=${java_version}"
   }
 }

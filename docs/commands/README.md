@@ -5,6 +5,7 @@ This directory is the expandable documentation counterpart to the runtime
 
 - [Settings](settings/README.md)
 - [UI](ui/README.md)
+- [Raw input](input/README.md)
 - [Main menu](mainmenu/README.md)
 - [In-game](ingame/README.md)
 

@@ -23,9 +23,11 @@ Main Menu, and future In-game commands whenever one exists.
 | `ui.set_slider` | Set a normalized slider value. |
 | `ui.choose`, `ui.toggle` | Change cycling controls. |
 | `ui.scroll` | Scroll a supported container. |
-| `ui.key_press` | Send a bounded navigation key. |
 
 Actions requiring an element use `elementId` and `screenStateVersion`; stale
 versions return a structured failure rather than acting on the wrong screen.
+
+For raw keyboard and mouse events, use the shared [Raw input](../input/README.md)
+branch. For changing registered keybind values, use `controls.update` directly.
 
 Return to the [command tree](../README.md).

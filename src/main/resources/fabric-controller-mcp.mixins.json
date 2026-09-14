@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "dev.fabriccontrollermcp.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "KeyboardHandlerInvoker",
+    "MouseHandlerInvoker",
+    "MouseHandlerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
