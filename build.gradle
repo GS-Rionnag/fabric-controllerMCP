@@ -29,6 +29,34 @@ loom {
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${loader_version}"
+
+    // Fabric Loader discovers these nested JARs from fabric.mod.json and adds
+    // them to this mod's classpath. Loom's `include` configuration intentionally
+    // does not include transitives, so list the complete resolved runtime set.
+    def mcpSdk = "io.modelcontextprotocol.sdk:mcp:${mcp_java_sdk_version}"
+    def tomcatEmbed = "org.apache.tomcat.embed:tomcat-embed-core:${tomcat_version}"
+    implementation mcpSdk
+    implementation tomcatEmbed
+
+    [
+        mcpSdk,
+        "io.modelcontextprotocol.sdk:mcp-json-jackson3:${mcp_java_sdk_version}",
+        "io.modelcontextprotocol.sdk:mcp-core:${mcp_java_sdk_version}",
+        "org.slf4j:slf4j-api:2.0.17",
+        "com.fasterxml.jackson.core:jackson-annotations:2.21",
+        "io.projectreactor:reactor-core:3.7.0",
+        "org.reactivestreams:reactive-streams:1.0.4",
+        "tools.jackson.core:jackson-databind:3.1.4",
+        "tools.jackson.core:jackson-core:3.1.4",
+        "com.networknt:json-schema-validator:3.0.6",
+        "com.ethlo.time:itu:1.14.0",
+        "tools.jackson.dataformat:jackson-dataformat-yaml:3.1.4",
+        "org.snakeyaml:snakeyaml-engine:3.0.1",
+        tomcatEmbed,
+        "org.apache.tomcat:tomcat-annotations-api:${tomcat_version}"
+    ].each { library ->
+        include library
+    }
 }
 
 java {

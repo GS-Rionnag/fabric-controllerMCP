@@ -2,20 +2,20 @@
 
 Status legend: `planned` · `active` · `complete`
 
-## Phase 0 — Foundation (`active`)
+## Phase 0 — Foundation (`complete`)
 
 - [x] Create continuity documentation.
 - [x] Capture a decision-gated implementation plan (`docs/IMPLEMENTATION_PLAN.md`).
-- [ ] Choose target Minecraft, Fabric Loader, Fabric API, Java, and MCP
-  library/transport versions.
-- [ ] Define the initial tool set and permission boundary.
+- [x] Choose target Minecraft, Fabric Loader, Fabric API, and Java versions.
+- [x] Choose the MCP library and local transport.
+- [x] Define the initial tool set and permission boundary.
 
-## Phase 1 — Mod and MCP core (`planned`)
+## Phase 1 — Mod and MCP core (`active`)
 
-- [ ] Scaffold a Fabric client mod.
-- [ ] Start and stop a local MCP server with the mod lifecycle.
-- [ ] Register tools, validate requests, and return structured results.
-- [ ] Bridge MCP work safely onto the Minecraft client thread.
+- [x] Scaffold a Fabric client mod.
+- [x] Start and stop a local MCP server with the mod lifecycle.
+- [x] Register initial diagnostic tools with structured results.
+- [x] Bridge MCP work safely onto the Minecraft client thread.
 - [ ] Add diagnostics and an opt-in configuration surface.
 
 ## Phase 2 — In-game UI control (`planned`)

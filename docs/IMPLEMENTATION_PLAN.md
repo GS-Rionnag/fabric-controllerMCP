@@ -253,5 +253,5 @@ continuity documents are required.
 
 ## Immediate next action
 
-Answer the planning questionnaire in the working conversation. Then finalize
-Checkpoint 0 in `DECISIONS.md` and scope the project skeleton precisely.
+Choose the MCP library and loopback transport, then implement the diagnostic
+transport, lifecycle ownership, and Minecraft-client-thread bridge.
